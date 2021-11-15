@@ -1,36 +1,30 @@
 package com.bank.domain;
 
 import com.bank.api.ClientBankDomain;
-import com.bank.spi.ClientAccountRepository;
+import com.bank.spi.AdviseAccount;
+
+import com.bank.spi.UpdateAccount;
 
 public class ClientBankDomainImpl implements ClientBankDomain {
 
-	public ClientAccountRepository clientAccountRepository;
-
-	
-	public ClientBankDomainImpl(ClientAccountRepository clientAccountRepository) {
-		this.clientAccountRepository = clientAccountRepository;
-	}
-
+	private  AdviseAccount adviseAccount;
+	private  UpdateAccount updateAccount;
 
 	@Override
 	public Double consulterCompte(String name) {
-		
-		return clientAccountRepository.consulterCompte(name).getBalance();
-	}
 
+		return adviseAccount.consulterCompte(name).getBalance();
+	}
 
 	@Override
 	public void verser(String name, double montant) {
-		
-	clientAccountRepository.verser(name, montant);
-	}
 
+		updateAccount.verser(name, montant);
+	}
 
 	@Override
 	public void retirer(String name, double montant) {
-		clientAccountRepository.retirer(name, montant);
+		updateAccount.retirer(name, montant);
 	}
- 
-	
+
 }

@@ -1,9 +1,13 @@
 package com.bank.repository;
 
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
-import com.bank.model.Account;
 
-public interface AccountJpaRepository extends JpaRepository<Account,String> {
-
+public interface AccountJpaRepository extends JpaRepository<AccountJpaEntity,String> {
+	
+	@Query("select acc from AccountJpaEntity acc  INNER JOIN acc.ClientJpaEntity clt where clt.name like %?1%")  
+	public List<AccountJpaEntity> FindAccountByName(String name);
+	
 }

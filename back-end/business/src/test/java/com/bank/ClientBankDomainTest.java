@@ -1,12 +1,16 @@
 package com.bank;
 
-import org.assertj.core.api.Assertions;
+
+import org.junit.Before;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
 
 public class ClientBankDomainTest {
 
+
+	
     @Test
     public void uselessTest() {
-        Assertions.assertThat(1).isEqualTo(1);
+      
     }
 }

@@ -1,7 +1,5 @@
 package com.bank.model;
 
-
-
 public class Account {
 
 	private String name;

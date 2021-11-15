@@ -1,42 +1,33 @@
 package com.bank.service;
 
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.bank.model.Account;
+import com.bank.repository.AccountJpaEntity;
 import com.bank.repository.AccountJpaRepository;
-import com.bank.repository.ClientJpaRepository;
-import com.bank.spi.ClientAccountRepository;
+import com.bank.repository.BankServiceHelper;
+import com.bank.spi.AdviseAccount;
+import com.bank.spi.UpdateAccount;
 
-@Service
-public class ClientRepositoryAdaptor implements ClientAccountRepository {
 
-	@Autowired
-	private ClientJpaRepository clientJpaRepository;
-	@Autowired
+public class ClientRepositoryAdaptor implements AdviseAccount,UpdateAccount{
+
+
 	private AccountJpaRepository accountJpaRepository;
-
-	public ClientRepositoryAdaptor(ClientJpaRepository clientJpaRepository) {
-		super();
-		this.clientJpaRepository = clientJpaRepository;
-	}
+	private BankServiceHelper bankServiceHelper;
 
 	@Override
 	public Account consulterCompte(String name) {
 
-		Account cp = accountJpaRepository.getOne(name);
+		AccountJpaEntity cp = accountJpaRepository.getOne(name);
 		if (cp == null)
 			throw new RuntimeException("compte introuvable");
-		return cp;
+		return bankServiceHelper.ConvertToAccountEntity(cp);
 	}
 
 	@Override
 	public void verser(String name, double montant) {
-		
 		Account cp = consulterCompte(name);
 		cp.setBalance(cp.getBalance() + montant);
-		accountJpaRepository.save(cp);
+		accountJpaRepository.save(bankServiceHelper.ConvertToAccountJpa(cp));
 	}
 
 	@Override
@@ -45,7 +36,7 @@ public class ClientRepositoryAdaptor implements ClientAccountRepository {
 		if (cp.getBalance() < montant)
 			throw new RuntimeException("solde insufisant");
 		cp.setBalance(cp.getBalance() - montant);
-		accountJpaRepository.save(cp);
+		accountJpaRepository.save(bankServiceHelper.ConvertToAccountJpa(cp));
 	}
 
 }
